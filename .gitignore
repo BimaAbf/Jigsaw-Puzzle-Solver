@@ -1,0 +1,14 @@
+*/__pycache__/
+__pycache__
+*.pyc
+.env
+.vscode/
+.DS_Store
+.idea/
+opt_temp/
+solved_puzzles/
+solver_data/
+Tests/
+feature_extractor.py
+solver.py
+solver_2.py

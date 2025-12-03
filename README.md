@@ -1,4 +1,4 @@
-# Jigsaw Puzzle Research Toolkit
+# Jigsaw Puzzle
 
 This repository hosts a small toolkit for experimenting with square jigsaw puzzle assembly, dataset generation, and image thresholding. It combines data preparation utilities, evaluation helpers, and solver prototypes intended for coursework-scale experiments.
 
@@ -60,23 +60,3 @@ Use `threshold_calculator.py` and the helpers under `thresholding/` to profile i
 ```sh
 python threshold_calculator.py --images PATH/TO/IMAGES
 ```
-
-Consult the module docstrings for additional flags (for example, output directories and plotting options).
-
-## Working With Solvers
-
-Prototype solver scripts (`solver.py`, `solver_2.py`, and related helpers) are excluded from version control by design. If you are extending solver functionality, copy any required scripts into the repository and adjust imports accordingly. Generated feature descriptors and intermediate outputs should live under `solver_data/` to keep experiments organised without polluting the repository history.
-
-## Tips and Conventions
-
-- Keep generated artifacts (plots, CSV files, reconstructed images) inside the ignored folders to avoid accidental commits.
-- Review the manifests written to each test directory; they are useful for tracking experiment parameters.
-- When running long experiments, record the exact command and parameters in a notes file so results remain reproducible.
-
-## Troubleshooting
-
-- **Missing source folders**: The dataset builder prints a warning and continues when a configured path does not exist. Double-check the `source_folders` mapping if the final sample counts look wrong.
-- **OpenCV import errors**: Ensure the Python environment that launches the scripts has `opencv-python` installed. Virtual environments are recommended to avoid conflicts with system packages.
-- **Permission errors in `Tests/`**: Verify that the directory is writable and not synced to a read-only location (for example, cloud backups with locked files).
-
-This README covers the tracked modules in the repository. Addenda for ignored solver scripts can be maintained locally as needed for your own experiments.

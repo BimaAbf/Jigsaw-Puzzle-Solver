@@ -5,9 +5,9 @@ from evaluation import generate_random_test_batch, evaluate_generated_batch
 
 if __name__ == "__main__":
     source_folders = {
-        "4x4": "",
-        "8x8": "",
-        "2x2": "",
+        "4x4": os.path.join("data", "4x4"),
+        "8x8": os.path.join("data", "8x8"),
+        "2x2": os.path.join("data", "2x2"),
     }
 
     ratios = {

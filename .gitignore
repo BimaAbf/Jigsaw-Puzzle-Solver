@@ -12,3 +12,4 @@ Tests/
 feature_extractor.py
 solver.py
 solver_2.py
+venv/

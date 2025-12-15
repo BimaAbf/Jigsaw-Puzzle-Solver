@@ -1,0 +1,778 @@
+{
+    "folder": "8x8",
+    "total_images": 110,
+    "correct_predictions": 107,
+    "accuracy": 0.9727272727272728,
+    "details": [
+        {
+            "filename": "0.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "1.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "10.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "100.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "101.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "102.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "103.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "104.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "105.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "106.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "107.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "108.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "109.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "11.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "12.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "13.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "14.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "15.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "16.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "17.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "18.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "19.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "2.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "20.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "21.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "22.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "23.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "24.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "25.jpg",
+            "true_label": "8x8",
+            "predicted_label": "2x2",
+            "success": false,
+            "error": null
+        },
+        {
+            "filename": "26.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "27.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "28.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "29.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "3.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "30.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "31.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "32.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "33.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "34.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "35.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "36.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "37.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "38.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "39.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "4.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "40.jpg",
+            "true_label": "8x8",
+            "predicted_label": "2x2",
+            "success": false,
+            "error": null
+        },
+        {
+            "filename": "41.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "42.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "43.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "44.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "45.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "46.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "47.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "48.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "49.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "5.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "50.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "51.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "52.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "53.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "54.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "55.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "56.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "57.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "58.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "59.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "6.jpg",
+            "true_label": "8x8",
+            "predicted_label": "4x4",
+            "success": false,
+            "error": null
+        },
+        {
+            "filename": "60.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "61.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "62.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "63.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "64.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "65.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "66.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "67.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "68.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "69.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "7.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "70.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "71.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "72.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "73.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "74.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "75.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "76.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "77.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "78.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "79.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "8.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "80.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "81.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "82.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "83.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "84.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "85.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "86.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "87.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "88.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "89.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "9.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "90.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "91.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "92.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "93.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "94.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "95.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "96.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "97.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "98.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        },
+        {
+            "filename": "99.jpg",
+            "true_label": "8x8",
+            "predicted_label": "8x8",
+            "success": true,
+            "error": null
+        }
+    ]
+}

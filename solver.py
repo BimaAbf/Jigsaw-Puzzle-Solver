@@ -279,26 +279,26 @@ def solve_puzzle_lab2(image_path, metadata, output_root="results", shuffle=True,
         r, c = idx // grid_size, idx % grid_size
         canvas[r*h_p:(r+1)*h_p, c*w_p:(c+1)*w_p] = shuffled_pieces[p_id]
         
-    if show_plot:
-        plt.figure(figsize=(10, 10))
-        plt.imshow(canvas)
-        plt.title(f"Solved: {os.path.basename(image_path)}")
-        plt.axis('off')
-        plt.show()
+    # if show_plot:
+    #     plt.figure(figsize=(10, 10))
+    #     plt.imshow(canvas)
+    #     plt.title(f"Solved: {os.path.basename(image_path)}")
+    #     plt.axis('off')
+    #     plt.show()
     
-    # Save Result
-    if output_root:
-        dim_folder = f"{grid_size}x{grid_size}"
-        save_dir = os.path.join(output_root, dim_folder)
-        os.makedirs(save_dir, exist_ok=True)
+    # # Save Result
+    # if output_root:
+    #     dim_folder = f"{grid_size}x{grid_size}"
+    #     save_dir = os.path.join(output_root, dim_folder)
+    #     os.makedirs(save_dir, exist_ok=True)
         
-        filename = os.path.basename(image_path)
-        save_path = os.path.join(save_dir, filename)
+    #     filename = os.path.basename(image_path)
+    #     save_path = os.path.join(save_dir, filename)
         
-        # Convert RGB back to BGR for OpenCV saving
-        canvas_bgr = cv2.cvtColor(canvas, cv2.COLOR_RGB2BGR)
-        cv2.imwrite(save_path, canvas_bgr)
-        print(f"Saved result to {save_path}")
+    #     # Convert RGB back to BGR for OpenCV saving
+    #     canvas_bgr = cv2.cvtColor(canvas, cv2.COLOR_RGB2BGR)
+    #     cv2.imwrite(save_path, canvas_bgr)
+    #     print(f"Saved result to {save_path}")
         
     return canvas
 

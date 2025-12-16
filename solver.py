@@ -7,6 +7,7 @@ import heapq
 import random
 import itertools
 from jigsaw.extractor import JigsawExtractor
+from solver_forest import solve_forest
 
 # --- 1. Feature Extraction & Similarity Metric ---
 
@@ -25,10 +26,10 @@ def extract_borders(img):
 
 def calculate_nssd(edge_a, edge_b):
     """
-    Normalized Sum of Squared Differences (NSSD).
-    Score ranges from 0 (dissimilar) to 1 (identical).
+    Simple but effective edge dissimilarity using SSD.
+    Returns dissimilarity (lower is better match).
     """
-    # Ensure same length (handle slight pixel mismatches if any, though usually square)
+    # Ensure same length
     if len(edge_a) != len(edge_b):
         min_len = min(len(edge_a), len(edge_b))
         edge_a = edge_a[:min_len]
@@ -37,41 +38,53 @@ def calculate_nssd(edge_a, edge_b):
     edge_a = edge_a.astype(np.float32)
     edge_b = edge_b.astype(np.float32)
     
-    diff = edge_a - edge_b
-    norm_diff = np.sum(diff ** 2)
-    norm_a = np.sum(edge_a ** 2)
-    norm_b = np.sum(edge_b ** 2)
+    # Simple SSD - lower is better
+    diff = np.sum((edge_a - edge_b) ** 2)
     
-    epsilon = 1e-6
-    score = 1 - (norm_diff / (norm_a + norm_b + epsilon))
-    return score
+    # Normalize by edge length and color range
+    normalized_diff = diff / (len(edge_a) * 255.0 * 255.0 * 3.0)
+    
+    return normalized_diff
 
 def compute_compatibility_matrices(pieces):
     """
-    Computes Horizontal (H) and Vertical (V) compatibility matrices.
-    H[i][j] = Similarity(piece_i.right, piece_j.left)
-    V[i][j] = Similarity(piece_i.bottom, piece_j.top)
+    Computes dissimilarity matrices using simple SSD.
+    Lower values = better match (we invert for compatibility scoring later).
     """
     n = len(pieces)
-    H = np.zeros((n, n))
-    V = np.zeros((n, n))
+    H = np.zeros((n, n))  # Horizontal dissimilarity
+    V = np.zeros((n, n))  # Vertical dissimilarity
     
     borders = [extract_borders(p) for p in pieces]
     
     for i in range(n):
         for j in range(n):
             if i == j: 
-                H[i, j] = -1.0
-                V[i, j] = -1.0
+                H[i, j] = float('inf')  # Invalid
+                V[i, j] = float('inf')
                 continue
             
-            # Horizontal: i | j  (i's right matches j's left)
+            # Horizontal: i's right should match j's left
             H[i, j] = calculate_nssd(borders[i]['right'], borders[j]['left'])
             
-            # Vertical: i / j (i's bottom matches j's top)
+            # Vertical: i's bottom should match j's top
             V[i, j] = calculate_nssd(borders[i]['bottom'], borders[j]['top'])
-            
-    return H, V
+    
+    # Convert dissimilarity to compatibility (invert and normalize)
+    # Use softmax-like transformation for better discrimination
+    H_compat = np.exp(-H * 10.0)  # Amplify differences
+    V_compat = np.exp(-V * 10.0)
+    
+    # Normalize each row so max is 1.0
+    for i in range(n):
+        max_h = np.max(H_compat[i, :])
+        max_v = np.max(V_compat[i, :])
+        if max_h > 0:
+            H_compat[i, :] = H_compat[i, :] / max_h
+        if max_v > 0:
+            V_compat[i, :] = V_compat[i, :]/ max_v
+    
+    return H_compat, V_compat
 
 # --- 2. Solvers ---
 
@@ -201,110 +214,251 @@ def solve_beam_search(n_pieces, H, V, beam_width=100):
 
 def solve_greedy_local(n_pieces, H, V):
     """
-    Greedy placement followed by Local Optimization (Hill Climbing) for large puzzles (8x8+).
+    Advanced solver for large puzzles (8x8+).
+    Uses best-buddy matching + progressive assembly + refined optimization.
     """
     grid_size = int(np.sqrt(n_pieces))
     
-    # --- Phase 1: Greedy Initialization ---
-    # Simple raster scan greedy: Place (0,0), then best match for (0,1), etc.
-    # Better: Prim's-like expansion? Let's stick to raster scan with beam-width 1 logic for simplicity
-    # or just reuse Beam Search with small width (e.g., 10) which is effectively greedy but smarter.
+    # --- Phase 1: Best Buddy Analysis ---
+    print(f"Phase 1: Best Buddy Analysis...")
     
-    # Let's use a randomized greedy start to avoid getting stuck in one bad seed
-    best_greedy_board = None
-    best_greedy_score = -1
+    # Find "best buddies" - pairs of pieces that mutually prefer each other
+    best_buddies_h = []  # Horizontal best buddies
+    best_buddies_v = []  # Vertical best buddies
     
-    # Try a few random starts
-    for _ in range(5):
+    for i in range(n_pieces):
+        # Find best right neighbor for piece i
+        best_right = np.argmax([H[i, j] if j != i else -1 for j in range(n_pieces)])
+        # Check if it's mutual (best left neighbor of best_right is i)
+        best_left_of_right = np.argmax([H[j, best_right] if j != best_right else -1 for j in range(n_pieces)])
+        if best_left_of_right == i and H[i, best_right] > 0.7:  # Strong mutual match
+            best_buddies_h.append((i, best_right, H[i, best_right]))
+    
+    for i in range(n_pieces):
+        # Find best bottom neighbor for piece i
+        best_bottom = np.argmax([V[i, j] if j != i else -1 for j in range(n_pieces)])
+        # Check if it's mutual
+        best_top_of_bottom = np.argmax([V[j, best_bottom] if j != best_bottom else -1 for j in range(n_pieces)])
+        if best_top_of_bottom == i and V[i, best_bottom] > 0.7:  # Strong mutual match
+            best_buddies_v.append((i, best_bottom, V[i, best_bottom]))
+    
+    print(f"  Found {len(best_buddies_h)} horizontal best buddies")
+    print(f"  Found {len(best_buddies_v)} vertical best buddies")
+    
+    # --- Phase 2: Use Beam Search with higher beam width ---
+    print(f"\nPhase 2: Enhanced Beam Search...")
+    beam_width = min(100, n_pieces * 2)  # Increased beam width
+    initial_board = solve_beam_search(n_pieces, H, V, beam_width=beam_width)
+    initial_score = calculate_board_score(initial_board, H, V, grid_size)
+    initial_score = calculate_board_score(initial_board, H, V, grid_size)
+    
+    # --- Phase 3: Multiple Greedy Starts with Best Buddy Constraints ---
+    print(f"\nPhase 3: Constrained Greedy Assembly...")
+    
+    best_greedy_board = initial_board
+    best_greedy_score = initial_score
+    
+    # Try greedy starts that respect best buddy relationships
+    for trial in range(5):
         used = set()
         board = [None] * n_pieces
         
-        # Pick random seed for (0,0)
-        seed = random.randint(0, n_pieces - 1)
-        board[0] = seed
-        used.add(seed)
+        # Start with the strongest best buddy pair
+        if trial == 0 and best_buddies_h:
+            # Use the strongest horizontal buddy pair as seed
+            best_buddies_h.sort(key=lambda x: x[2], reverse=True)
+            seed1, seed2, _ = best_buddies_h[0]
+            center = (grid_size // 2) * grid_size + (grid_size // 2)
+            board[center] = seed1
+            board[center + 1] = seed2
+            used.add(seed1)
+            used.add(seed2)
+        else:
+            # Standard center start
+            seed = np.argmax([np.sum(H[i, :]) + np.sum(V[i, :]) for i in range(n_pieces)])
+            center = (grid_size // 2) * grid_size + (grid_size // 2)
+            board[center] = seed
+            used.add(seed)
         
-        current_score = 0
+        # Build outward, prioritizing high-scoring neighbors
+        positions = []
+        for r in range(grid_size):
+            for c in range(grid_size):
+                idx = r * grid_size + c
+                if board[idx] is None:
+                    positions.append((idx, r, c))
         
-        for i in range(1, n_pieces):
-            r, c = i // grid_size, i % grid_size
+        # Sort by number of placed neighbors (fill densely)
+        def count_neighbors(idx, r, c):
+            count = 0
+            if c > 0 and board[idx-1] is not None: count += 1
+            if c < grid_size-1 and board[idx+1] is not None: count += 1
+            if r > 0 and board[idx-grid_size] is not None: count += 1
+            if r < grid_size-1 and board[idx+grid_size] is not None: count += 1
+            return count
+        
+        while any(board[i] is None for i in range(n_pieces)):
+            # Find position with most neighbors
+            valid_positions = [(idx, r, c) for idx, r, c in positions if board[idx] is None]
+            if not valid_positions:
+                break
+            
+            # Sort by neighbor count
+            valid_positions.sort(key=lambda x: count_neighbors(x[0], x[1], x[2]), reverse=True)
+            idx, r, c = valid_positions[0]
+            
+            # Find best piece considering ALL neighbors
             best_p = -1
-            best_inc = -float('inf')
+            best_score = -float('inf')
             
             for p in range(n_pieces):
                 if p not in used:
-                    inc = 0
-                    if c > 0: inc += H[board[i-1], p]
-                    if r > 0: inc += V[board[i-grid_size], p]
+                    score = 0
+                    count = 0
                     
-                    if inc > best_inc:
-                        best_inc = inc
+                    # Weight by number of neighbors (more neighbors = more reliable)
+                    if c > 0 and board[idx-1] is not None:
+                        score += H[board[idx-1], p] * 2.0  # Left
+                        count += 2
+                    if c < grid_size-1 and board[idx+1] is not None:
+                        score += H[p, board[idx+1]] * 2.0  # Right
+                        count += 2
+                    if r > 0 and board[idx-grid_size] is not None:
+                        score += V[board[idx-grid_size], p] * 2.0  # Top
+                        count += 2
+                    if r < grid_size-1 and board[idx+grid_size] is not None:
+                        score += V[p, board[idx+grid_size]] * 2.0  # Bottom
+                        count += 2
+                    
+                    # Add best buddy bonus
+                    for p1, p2, buddy_score in best_buddies_h:
+                        if (c > 0 and board[idx-1] == p1 and p == p2) or \
+                           (c < grid_size-1 and board[idx+1] == p2 and p == p1):
+                            score += 5.0  # Large bonus for buddy pairs
+                    
+                    for p1, p2, buddy_score in best_buddies_v:
+                        if (r > 0 and board[idx-grid_size] == p1 and p == p2) or \
+                           (r < grid_size-1 and board[idx+grid_size] == p2 and p == p1):
+                            score += 5.0
+                    
+                    if count > 0:
+                        avg_score = score / count
+                        if avg_score > best_score:
+                            best_score = avg_score
+                            best_p = p
+            
+            if best_p == -1:
+                # No scored neighbors, pick any unused
+                for p in range(n_pieces):
+                    if p not in used:
                         best_p = p
+                        break
             
-            board[i] = best_p
-            used.add(best_p)
-            current_score += best_inc
-            
-        if current_score > best_greedy_score:
-            best_greedy_score = current_score
+            if best_p != -1:
+                board[idx] = best_p
+                used.add(best_p)
+        
+        trial_score = calculate_board_score(board, H, V, grid_size)
+        if trial_score > best_greedy_score:
+            best_greedy_score = trial_score
             best_greedy_board = board
+            print(f"  Trial {trial}: New best score {trial_score:.2f}")
 
     board = list(best_greedy_board)
     current_score = best_greedy_score
     
-    # --- Phase 2: Local Optimization (Hill Climbing) ---
-    # Swap two tiles, check if score improves
+    # --- Phase 4: Aggressive Simulated Annealing ---
+    print(f"\nPhase 4: Aggressive Simulated Annealing")
+    print(f"Initial Score: {current_score:.2f}")
     
-    max_iter = 10000
-    no_improv_limit = 1000
-    no_improv = 0
+    max_iter = 100000  # Even more iterations
+    temp = 2.0  # Higher starting temperature
+    cooling_rate = 0.99992  # Very slow cooling
+    min_temp = 0.0001
     
-    print(f"Starting Local Optimization. Initial Score: {current_score:.2f}")
+    best_board = list(board)
+    best_score = current_score
+    
+    accept_count = 0
+    reject_count = 0
     
     for it in range(max_iter):
-        # Pick two random indices
-        idx1, idx2 = random.sample(range(n_pieces), 2)
+        # Adaptive cooling
+        if it % 100 == 0:
+            temp *= cooling_rate
+            temp = max(temp, min_temp)
+        
+        # Try different swap strategies
+        if random.random() < 0.7:
+            # Standard: Random swap
+            idx1, idx2 = random.sample(range(n_pieces), 2)
+        else:
+            # Strategic: Swap pieces with low local scores
+            local_scores = []
+            for idx in range(n_pieces):
+                r, c = idx // grid_size, idx % grid_size
+                local_s = 0
+                if c > 0: local_s += H[board[idx-1], board[idx]]
+                if c < grid_size-1: local_s += H[board[idx], board[idx+1]]
+                if r > 0: local_s += V[board[idx-grid_size], board[idx]]
+                if r < grid_size-1: local_s += V[board[idx], board[idx+grid_size]]
+                local_scores.append((local_s, idx))
+            
+            # Pick from worst 20%
+            local_scores.sort()
+            worst_n = max(2, n_pieces // 5)
+            idx1, idx2 = random.sample([idx for _, idx in local_scores[:worst_n]], 2)
         
         # Calculate score change
-        # We only need to check the neighbors of idx1 and idx2
-        
-        def get_local_score(idx, p_id):
+        def get_comprehensive_local_score(idx, p_id, current_board):
             r, c = idx // grid_size, idx % grid_size
             s = 0
-            # Left
-            if c > 0: s += H[board[idx-1], p_id]
-            # Right
-            if c < grid_size - 1: s += H[p_id, board[idx+1]]
-            # Top
-            if r > 0: s += V[board[idx-grid_size], p_id]
-            # Bottom
-            if r < grid_size - 1: s += V[p_id, board[idx+grid_size]]
+            if c > 0 and current_board[idx-1] is not None:
+                s += H[current_board[idx-1], p_id]
+            if c < grid_size - 1 and current_board[idx+1] is not None:
+                s += H[p_id, current_board[idx+1]]
+            if r > 0 and current_board[idx-grid_size] is not None:
+                s += V[current_board[idx-grid_size], p_id]
+            if r < grid_size - 1 and current_board[idx+grid_size] is not None:
+                s += V[p_id, current_board[idx+grid_size]]
             return s
-
-        # Score BEFORE swap
-        s_before = get_local_score(idx1, board[idx1]) + get_local_score(idx2, board[idx2])
         
-        # Perform Swap in temp
+        s_before = (get_comprehensive_local_score(idx1, board[idx1], board) + 
+                   get_comprehensive_local_score(idx2, board[idx2], board))
+        
+        # Perform swap
         board[idx1], board[idx2] = board[idx2], board[idx1]
         
-        # Score AFTER swap
-        s_after = get_local_score(idx1, board[idx1]) + get_local_score(idx2, board[idx2])
+        s_after = (get_comprehensive_local_score(idx1, board[idx1], board) + 
+                  get_comprehensive_local_score(idx2, board[idx2], board))
         
-        if s_after > s_before:
-            # Keep swap
-            current_score += (s_after - s_before)
-            no_improv = 0
-            # print(f"Iter {it}: Improved to {current_score:.2f}")
+        delta = s_after - s_before
+        
+        # Acceptance criterion
+        if delta > 0 or (temp > min_temp and random.random() < np.exp(delta / temp)):
+            # Accept
+            current_score += delta
+            accept_count += 1
+            
+            if current_score > best_score:
+                best_score = current_score
+                best_board = list(board)
+                if it % 1000 == 0:
+                    print(f"  Iter {it}: Best={best_score:.2f}, Current={current_score:.2f}, "
+                          f"Temp={temp:.4f}, Accept Rate={accept_count/(accept_count+reject_count):.2%}")
         else:
-            # Revert swap
+            # Reject
             board[idx1], board[idx2] = board[idx2], board[idx1]
-            no_improv += 1
-            
-        if no_improv > no_improv_limit:
-            print("Converged.")
+            reject_count += 1
+        
+        # Early stopping if converged
+        if it > 10000 and accept_count == 0 and temp < 0.001:
+            print(f"Converged at iteration {it}")
             break
-            
-    return board
+    
+    print(f"Final Score: {best_score:.2f}")
+    print(f"Total Accepted: {accept_count}, Rejected: {reject_count}")
+    return best_board
 
 # --- 3. Main Pipeline ---
 
@@ -373,8 +527,8 @@ def solve_puzzle_lab2(image_path, metadata, output_root="results", shuffle=True,
         print("Strategy: Beam Search")
         solution_indices = solve_beam_search(n_pieces, H, V, beam_width=200)
     else:
-        print("Strategy: Greedy + Local Optimization")
-        solution_indices = solve_greedy_local(n_pieces, H, V)
+        print("Strategy: Forest Solver (Kruskal's + Backtracking)")
+        solution_indices = solve_forest(shuffled_pieces, grid_size)
         
     # 7. Evaluate & Visualize
     if not solution_indices:

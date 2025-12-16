@@ -1,62 +1,80 @@
-# Jigsaw Puzzle
+# 🧩 Jigsaw Puzzle Solver
 
-This repository hosts a small toolkit for experimenting with square jigsaw puzzle assembly, dataset generation, and image thresholding. It combines data preparation utilities, evaluation helpers, and solver prototypes intended for coursework-scale experiments.
+An intelligent computer vision application that automatically solves square jigsaw puzzles. This project uses advanced algorithms to analyze puzzle pieces, determine their compatibility, and reconstruct the original image.
 
-## Repository Layout
+## ✨ Features
 
-- `evaluation/` – dataset builder and scoring helpers used by the top-level evaluation script.
-- `evaluation.py` – command-line entry point that creates blended test batches and evaluates them.
-- `processor.py` – puzzle scoring utilities shared across prototypes.
-- `thresholding/` – threshold exploration utilities for preprocessing studies.
-- `threshold_calculator.py` – quick script for running the thresholding experiments.
-- `.vscode/` – workspace settings for local development (optional).
+- **Automatic Grid Detection**: Analyzes the input image to determine the puzzle grid size (e.g., 2x2, 3x3, 4x4, etc.).
+- **Intelligent Segmentation**: Automatically slices the input image into puzzle pieces based on the detected grid.
+- **Multiple Solving Strategies**:
+  - **Backtracking**: Exact solver for small puzzles (2x2, 3x3).
+  - **Beam Search**: Heuristic search for medium puzzles (4x4, 5x5).
+  - **Forest Solver**: Advanced Kruskal's algorithm + Backtracking for larger puzzles.
+- **Interactive UI**: User-friendly web interface built with Streamlit.
+- **Visual Feedback**: Displays the input puzzle, segmented pieces, and the final solved result.
 
-Folders such as `Tests/`, `solver_data/`, and `solved_puzzles/` are intentionally ignored by version control because they store generated artifacts.
+## 🛠️ Installation
 
-## Requirements
+1.  **Clone the repository**:
+    ```bash
+    git clone <repository-url>
+    cd Jigsaw-Puzzle-Solver
+    ```
 
-- Python 3.10 or newer
-- OpenCV (`opencv-python`)
-- NumPy
-- Matplotlib
-- Any additional dependencies listed in individual modules
+2.  **Create a virtual environment** (optional but recommended):
+    ```bash
+    python -m venv venv
+    # Windows
+    venv\Scripts\activate
+    # macOS/Linux
+    source venv/bin/activate
+    ```
 
-Install the required packages once before running any scripts:
+3.  **Install dependencies**:
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *(Note: If `requirements.txt` is missing, install the following packages: `streamlit`, `opencv-python`, `numpy`, `matplotlib`)*
 
-```sh
-python -m pip install --upgrade pip
-python -m pip install opencv-python numpy matplotlib
+## 🚀 Usage
+
+1.  **Run the Streamlit application**:
+    ```bash
+    streamlit run app.py
+    ```
+
+2.  **Use the Web Interface**:
+    - Upload a puzzle image (JPG or PNG).
+    - The app will automatically analyze the image and detect the grid size.
+    - Click **"Solve Puzzle"** to start the process.
+    - View the segmented pieces and the final reconstructed image.
+
+## 🧠 How It Works
+
+1.  **Preprocessing**: The input image is analyzed to detect the number of pieces (grid size).
+2.  **Segmentation**: The image is sliced into individual pieces.
+3.  **Feature Extraction**: The borders of each piece are extracted.
+4.  **Compatibility Analysis**: A dissimilarity matrix is computed using the Normalized Sum of Squared Differences (NSSD) between piece borders.
+5.  **Solving**:
+    - **Small Puzzles**: Uses a backtracking algorithm to find the exact solution.
+    - **Medium Puzzles**: Uses Beam Search to explore the most promising partial solutions.
+    - **Large Puzzles**: Uses a "Forest" approach, building small clusters of matching pieces (trees) and merging them.
+
+## 📂 Project Structure
+
+```
+Jigsaw-Puzzle-Solver/
+├── app.py                  # Streamlit application entry point
+├── solver.py               # Core solver logic and pipeline
+├── solver_forest.py        # Advanced solver for large puzzles
+├── jigsaw/                 # Package for image analysis and extraction
+│   ├── extractor.py        # Grid size detection logic
+│   └── ...
+├── evaluation/             # Evaluation metrics and datasets
+├── thresholding/           # Thresholding analysis tools
+└── README.md               # Project documentation
 ```
 
-## Quick Start
+## 🤝 Contributing
 
-1. Clone or copy the project into your working directory.
-2. Ensure the expected folder structure exists:
-   - Place raw puzzle images in class-specific folders (for example, `data/2x2`, `data/4x4`, `data/8x8`).
-   - Confirm that the `Tests/` directory is writable; it will be populated with generated test batches.
-3. Configure the source directories inside `evaluation.py` so that each puzzle size points to the folder containing its images.
-
-## Generating and Evaluating Test Batches
-
-The top-level `evaluation.py` script assembles a mixed dataset based on sampling ratios, then evaluates the generated collection using the helper functions in `evaluation/`.
-
-```sh
-python evaluation.py
-```
-
-The script will:
-
-1. Create a new test directory inside `Tests/` (for example, `Tests/test_004`).
-2. Copy sampled images into `Tests/test_XXX/images/` with a size prefix.
-3. Write a `test_ground_truth.csv` manifest and `manifest.json` summarising the run.
-4. Invoke `evaluation.evaluate_generated_batch` to compute metrics for the generated dataset.
-
-Edit the `source_folders`, `ratios`, and `total_images` variables in `evaluation.py` to match your dataset layout and desired sampling plan before running the script.
-
-## Thresholding Utilities
-
-Use `threshold_calculator.py` and the helpers under `thresholding/` to profile intensity thresholds across a directory of images. These tools are isolated from the solver pipeline and can be run independently:
-
-```sh
-python threshold_calculator.py --images PATH/TO/IMAGES
-```
+Contributions are welcome! Please feel free to submit a Pull Request.

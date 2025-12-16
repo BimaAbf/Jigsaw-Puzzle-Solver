@@ -4,4 +4,4 @@ matplotlib
 seaborn
 scikit-learn
 ipykernel
-skimage
+streamlit

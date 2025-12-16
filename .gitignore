@@ -12,3 +12,5 @@ Tests/
 feature_extractor.py
 solver_2.py
 venv/
+temp_output/
+temp_extractor_output/
